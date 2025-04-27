@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nagus Bus Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    img {
+      width: 90%;
+      max-width: 400px;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+      margin-bottom: 20px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+      width: 80%;
+      max-width: 300px;
+      margin: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #0078D7;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #005fa3;
+    }
+    #result {
+      margin-top: 10px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🚍 Guess the HSL Bus Model</h1>
+
+<img id="busImage" src="" alt="Bus Image">
+
+<p>Type the bus model name (Example: Volvo 8900LE)</p>
+
+<input type="text" id="answer" placeholder="Enter bus model">
+<br>
+<button onclick="checkAnswer()">Submit</button>
+
+<p id="result"></p>
+
+<script>
+const buses = [
+  { model: "Volvo8700", image: "volvo8700.png" },
+  { model: "Scania Suburban", image: "scaniasuburban.jpg" },
+  { model: "Volvo 7900E", image: "volvo7900e.jpg" },
+  { model: "Volvo 8900LE", image: "volvo8900le.jpg" },
+  { model: "Scania Omniexpress", image: "omnixpress.jpg" }
+];
+
+let currentBus = null;
+
+function newQuestion() {
+  currentBus = buses[Math.floor(Math.random() * buses.length)];
+  document.getElementById("busImage").src = currentBus.image;
+  document.getElementById("answer").value = "";
+  document.getElementById("result").textContent = "";
+}
+
+function checkAnswer() {
+  const userInput = document.getElementById("answer").value.trim().toLowerCase();
+  const correctAnswer = currentBus.model.toLowerCase();
+
+  if (userInput === correctAnswer) {
+    document.getElementById("result").innerHTML = "<span style='color: green;'>✅ Correct!</span>";
+    setTimeout(newQuestion, 1500); // Load next question after 1.5 seconds
+  } else {
+    document.getElementById("result").innerHTML = "<span style='color: red;'>❌ Wrong! Correct: " + currentBus.model + "</span>";
+    setTimeout(newQuestion, 4000); // Wait 4 seconds before showing next
+  }
+}
+
+// Allow pressing "Enter" to submit
+document.getElementById("answer").addEventListener("keypress", function(event) {
+  if (event.key === "Enter") {
+    checkAnswer();
+  }
+});
+
+// Start first question on page load
+window.onload = newQuestion;
+</script>
+
+</body>
+</html>
